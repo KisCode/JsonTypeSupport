@@ -1,0 +1,3 @@
+include ':gsonSupportLib'
+include ':app'
+rootProject.name = "GsonTypeSupport"
