@@ -2,12 +2,14 @@ package com.kiscode.gson.support;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kiscode.gson.support.model.PageData;
 import com.kiscode.gson.support.model.ReturnModel;
 import com.kiscode.gson.support.model.Student;
+import com.kiscode.gson.supportlib.GsonUtil;
 import com.kiscode.gson.supportlib.ParameterizedTypeImp;
 
 import java.lang.reflect.ParameterizedType;
@@ -28,8 +30,14 @@ public class MainActivity extends AppCompatActivity {
 //        toObject();
 //        toList();
 //        toReturnModel();
-        toReturnModelList();
+//        toReturnModelList();
 //        toReturnModelDataList();
+
+    }
+
+    public void load(View view) {
+        toReturnModelList();
+        toReturnModelDataList2();
     }
 
     private void toObject() {
@@ -84,5 +92,22 @@ public class MainActivity extends AppCompatActivity {
         }.getType());
 
         Log.d(TAG, "json:\n" + json + "\nToString:\n" + dataStudentListReturnModel.toString());
+    }
+
+    private void toReturnModelDataList2() {
+        JsonLoader loader = new JsonLoader(this);
+//        ReturnModel<Student> returnModel = loader.studentReturnModel();
+
+        loader.loadJsontoRuturnStudent(new CallBack<ReturnModel<Student>>() {
+            @Override
+            public void onSuccess(ReturnModel<Student> studentReturnModel) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+
+            }
+        });
     }
 }
