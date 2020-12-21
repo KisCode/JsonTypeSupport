@@ -21,7 +21,10 @@ public abstract class BaseCallBack<T> implements ICallBack<T> {
 
     @Override
     public T convert(String json) {
-        //获取父类泛型type, 如: BaseCallBack<ReturnModel<List<Student>>>
+        //getSuperClass() 获得该类的父类  BaseCallBack的匿名内部类的父类 即BaseCallBack
+        //getGenericSuperclass()获得带有类型的父类  即BaseCallBack<ReturnModel<List<Student>>>
+        //Type是Java编程语言中所有类型的公共高级接口，它们包括原始类型，参数化类型，数组类型，类型变量和基本类型
+        //获取带有泛型类型的父类type, 如: BaseCallBack<ReturnModel<List<Student>>>
         Type genericSuperclass = getClass().getGenericSuperclass();
         if (genericSuperclass != null) {
             Type[] params = ((ParameterizedType) genericSuperclass).getActualTypeArguments();
