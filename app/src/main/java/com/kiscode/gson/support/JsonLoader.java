@@ -4,10 +4,8 @@ package com.kiscode.gson.support;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.kiscode.gson.support.model.ReturnModel;
 import com.kiscode.gson.support.model.Student;
-import com.kiscode.gson.supportlib.ParameterizedTypeImp;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -27,11 +25,11 @@ public class JsonLoader {
     }
 
     public ReturnModel<Student> studentReturnModel() {
+        //获取当前栈桢内 方法信息
         StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[2];
         String methodName = stackTraceElement.getMethodName();
         String className = stackTraceElement.getClassName();
         Log.i("studentReturnModel", className + "\t" + methodName);
-
         try {
             Method method = Class.forName(stackTraceElement.getClassName()).getMethod(methodName);
             Type returnType = method.getGenericReturnType();
@@ -42,23 +40,19 @@ public class JsonLoader {
         return null;
     }
 
-    public <T> void loadJsontoRuturnStudent(CallBack<T> callBack) {
+    public <T> T loadJsontoRuturnStudent(ICallBack<T> callBack) {
         Class cls = callBack.getClass();
-
-        Type genericSuperclass = cls.getGenericSuperclass();
-        Log.i(TAG, "loadJsontoRuturnStudent:" + callBack.getClass() + "\t" + genericSuperclass);
-
-
+        Type type = cls.getGenericSuperclass();
+        Log.i(TAG, "callBack class:" + callBack.getClass() + "\n getGenericSuperclass:" + type);
         String json = context.getString(R.string.jsonRuturnStudent);
-        Gson gson = new Gson();
+        return callBack.convert(json);
+    }
 
-        Type type = new ParameterizedTypeImp(ReturnModel.class, new Class[]{Student.class});
-        ReturnModel<Student> studentReturnModel = gson.fromJson(json, type);
-//        Log.d(TAG, "json:\n" + json + "\nToString:\n" + studentReturnModel.toString());
-
-
-        System.out.println(this.getClass().getSimpleName() + ":"
-                + new Exception().getStackTrace()[0].getMethodName());
-
+    public <T> T loadJsontoRuturnStudentList(ICallBack<T> callBack) {
+        Class cls = callBack.getClass();
+        Type type = cls.getGenericSuperclass();
+        Log.i(TAG, "callBack class:" + callBack.getClass() + "\n getGenericSuperclass:" + type);
+        String json = context.getString(R.string.jsonRuturnStudentList);
+        return callBack.convert(json);
     }
 }

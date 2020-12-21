@@ -4,19 +4,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kiscode.gson.support.model.PageData;
 import com.kiscode.gson.support.model.ReturnModel;
 import com.kiscode.gson.support.model.Student;
-import com.kiscode.gson.supportlib.GsonUtil;
 import com.kiscode.gson.supportlib.ParameterizedTypeImp;
 
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void load(View view) {
-        toReturnModelList();
-        toReturnModelDataList2();
+//        toReturnModelList();
+        loadDataByCallBack();
     }
 
     private void toObject() {
@@ -45,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         Student student = gson.fromJson(studentJsonStr, Student.class);
         Log.d(TAG, "json:\n" + studentJsonStr + "\nToString:\n" + student.toString());
-
-
     }
 
     private void toList() {
@@ -79,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         }.getType());
         Log.d(TAG, "json:\n" + json + "\nToString:\n" + studentListReturnModel.toString());
 
+        //使用ParameterizedTypeImp方式
         Type listType = new ParameterizedTypeImp(List.class, new Class[]{Student.class});
         Type type = new ParameterizedTypeImp(ReturnModel.class, new Type[]{listType});
         studentListReturnModel = gson.fromJson(json, type);
@@ -94,14 +91,30 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "json:\n" + json + "\nToString:\n" + dataStudentListReturnModel.toString());
     }
 
-    private void toReturnModelDataList2() {
+    private void loadDataByCallBack() {
         JsonLoader loader = new JsonLoader(this);
-//        ReturnModel<Student> returnModel = loader.studentReturnModel();
 
-        loader.loadJsontoRuturnStudent(new CallBack<ReturnModel<Student>>() {
+        loader.loadJsontoRuturnStudent(new ICallBack<ReturnModel<Student>>() {
             @Override
             public void onSuccess(ReturnModel<Student> studentReturnModel) {
+                Log.i(TAG, "studentReturnModel:" + studentReturnModel.toString());
+            }
 
+            @Override
+            public void onFailure(Throwable throwable) {
+
+            }
+
+            @Override
+            public ReturnModel<Student> convert(String json) {
+                return null;
+            }
+        });
+
+        loader.loadJsontoRuturnStudentList(new BaseCallBack<ReturnModel<List<Student>>>() {
+            @Override
+            public void onSuccess(ReturnModel<List<Student>> studentReturnModel) {
+                Log.i(TAG, "studentReturnModelList:" + studentReturnModel.toString());
             }
 
             @Override
