@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import com.kiscode.gson.support.model.PageData;
 import com.kiscode.gson.support.model.ReturnModel;
 import com.kiscode.gson.support.model.Student;
+import com.kiscode.gson.support.support.TypeSupport;
 import com.kiscode.gson.supportlib.ParameterizedTypeImp;
 
 import java.lang.reflect.Type;
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private void toReturnModelList() {
         String json = getString(R.string.jsonRuturnStudentList);
         Gson gson = new Gson();
+//        Type type = new TypeToken<String>().getType();
         ReturnModel<Student> studentListReturnModel = gson.fromJson(json, new TypeToken<ReturnModel<List<Student>>>() {
         }.getType());
         Log.d(TAG, "json:\n" + json + "\nToString:\n" + studentListReturnModel.toString());
@@ -93,34 +95,51 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadDataByCallBack() {
         JsonLoader loader = new JsonLoader(this);
-
-        loader.loadJsontoRuturnStudent(new ICallBack<ReturnModel<Student>>() {
-            @Override
-            public void onSuccess(ReturnModel<Student> studentReturnModel) {
-                Log.i(TAG, "studentReturnModel:" + studentReturnModel.toString());
-            }
-
-            @Override
-            public void onFailure(Throwable throwable) {
-
-            }
+/*
+        ReturnModel<Student> studentReturnModel = loader.loadJsontoRuturnStudent(new ICallBack<ReturnModel<Student>>() {
 
             @Override
             public ReturnModel<Student> convert(String json) {
+                Class clz = this.getClass();
+                Type type = clz.getGenericSuperclass();
+                Log.i(TAG, "callBack class:" + clz + "\n getGenericSuperclass:" + type);
+                if (type instanceof Object) {
+                    Type[] types = clz.getGenericInterfaces();
+                    if (types.length > 0 && types[0] instanceof ParameterizedType) {
+                        Type[] params = ((ParameterizedType) types[0]).getActualTypeArguments();
+                        Log.i(TAG, "开始解析:" + clz + "\t getGenericSuperclass:" + params[0]);
+                        return new Gson().fromJson(json, params[0]);
+                    }
+                } else {
+                    if (type instanceof ParameterizedTypeImp) {
+                        Type[] params = ((ParameterizedType) type).getActualTypeArguments();
+                        return new Gson().fromJson(json, params[0]);
+                    }
+                }
                 return null;
             }
         });
+        Log.i(TAG, "studentReturnModel:" + studentReturnModel.toString());*/
+
+//        new TypeToken<String>(){}.getType();
+//        new BaseCallBack<String>().getType();
+//        new TypeSupport<String>(){}.log();
+
+        Type type = new TypeSupport<ReturnModel<List<Student>>>() {
+        }.getType();
 
         loader.loadJsontoRuturnStudentList(new BaseCallBack<ReturnModel<List<Student>>>() {
-            @Override
-            public void onSuccess(ReturnModel<List<Student>> studentReturnModel) {
-                Log.i(TAG, "studentReturnModelList:" + studentReturnModel.toString());
-            }
-
-            @Override
-            public void onFailure(Throwable throwable) {
-
-            }
+//            @Override
+//            public void onSuccess(ReturnModel<List<Student>> studentReturnModel) {
+//                Log.i(TAG, "studentReturnModelList:" + studentReturnModel.toString());
+//            }
+//
+//            @Override
+//            public void onFailure(Throwable throwable) {
+//
+//            }
         });
+        ReturnModel<PageData<List<Student>>> returnModel = loader.loadjsonReturnDataStudentList(new BaseCallBack<ReturnModel<PageData<List<Student>>>>());
+        Log.i(TAG, "studentReturnModel:" + returnModel.toString());
     }
 }

@@ -9,8 +9,10 @@ public class ClassTypeCapture<T> {
         this.kind = kind;
     }
 
-    public boolean f(Object arg) {
-        return kind.isInstance(arg);
+    public boolean f(Object obj) {
+        //判定指定的 Object 是否与此 Class 所表示的对象兼容
+        //等于 obj instance kind
+        return kind.isInstance(obj);
     }
 
     public static void main(String[] args) {

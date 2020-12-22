@@ -42,8 +42,11 @@ public class JsonLoader {
 
     public <T> T loadJsontoRuturnStudent(ICallBack<T> callBack) {
         Class cls = callBack.getClass();
+        /*
         Type type = cls.getGenericSuperclass();
-        Log.i(TAG, "callBack class:" + callBack.getClass() + "\n getGenericSuperclass:" + type);
+        Type[] types = cls.getGenericInterfaces();
+        Log.i(TAG, "callBack class:" + callBack.getClass() + "\n getGenericSuperclass:" + type+"\t types:"+types);
+        */
         String json = context.getString(R.string.jsonRuturnStudent);
         return callBack.convert(json);
     }
@@ -55,4 +58,13 @@ public class JsonLoader {
         String json = context.getString(R.string.jsonRuturnStudentList);
         return callBack.convert(json);
     }
+
+    public <T> T loadjsonReturnDataStudentList(ICallBack<T> callBack) {
+        Type type = callBack.getClass().getGenericSuperclass();
+        Log.i(TAG, "callBack class:" + callBack.getClass() + "\n getGenericSuperclass:" + type);
+        String json = context.getString(R.string.jsonReturnDataStudentList);
+        return callBack.convert(json);
+    }
+
+
 }
