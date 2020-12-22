@@ -101,7 +101,7 @@ class ClassAsFactory<T> {
 ##### 1.4.3 创建泛型数组
 - 如果需要用到泛型参数类型的数组那么使用ArrayList
 
-```
+```java
 public class ListOfGenerics<T> {
     //通过
     private List<T> array = new ArrayList<>();
