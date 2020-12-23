@@ -3,7 +3,7 @@ package com.kiscode.gson.support.support;
 import java.lang.reflect.Type;
 
 /**
- * Description:
+ * Description: 简陋版Gson TypeToken
  * Author: keno
  * Date : 2020/12/22 11:38
  **/

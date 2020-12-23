@@ -4,11 +4,15 @@ package com.kiscode.gson.support;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.kiscode.gson.support.callback.ICallBack;
 import com.kiscode.gson.support.model.ReturnModel;
 import com.kiscode.gson.support.model.Student;
+import com.kiscode.gson.support.support.TypeSupport;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.Calendar;
 
 /****
  * Description: 
@@ -40,31 +44,35 @@ public class JsonLoader {
         return null;
     }
 
-    public <T> T loadJsontoRuturnStudent(ICallBack<T> callBack) {
-        Class cls = callBack.getClass();
-        /*
-        Type type = cls.getGenericSuperclass();
-        Type[] types = cls.getGenericInterfaces();
-        Log.i(TAG, "callBack class:" + callBack.getClass() + "\n getGenericSuperclass:" + type+"\t types:"+types);
-        */
+    public <T> void loadJsontoRuturnStudent(ICallBack<T> callBack) {
+        //模拟加载数据
         String json = context.getString(R.string.jsonRuturnStudent);
-        return callBack.convert(json);
+        if (isSuccessRandom()) {
+            callBack.onSuccess(callBack.convert(json));
+        } else {
+            callBack.onFailure(new IllegalArgumentException("Request random erro"));
+        }
     }
 
-    public <T> T loadJsontoRuturnStudentList(ICallBack<T> callBack) {
-        Class cls = callBack.getClass();
-        Type type = cls.getGenericSuperclass();
-        Log.i(TAG, "callBack class:" + callBack.getClass() + "\n getGenericSuperclass:" + type);
+    public <T> void loadJsontoRuturnStudentList(ICallBack<T> callBack) {
+        //模拟加载数据
         String json = context.getString(R.string.jsonRuturnStudentList);
-        return callBack.convert(json);
+        if (isSuccessRandom()) {
+            callBack.onSuccess(callBack.convert(json));
+        } else {
+            callBack.onFailure(new IllegalArgumentException("Request random erro"));
+        }
     }
 
-    public <T> T loadjsonReturnDataStudentList(ICallBack<T> callBack) {
-        Type type = callBack.getClass().getGenericSuperclass();
-        Log.i(TAG, "callBack class:" + callBack.getClass() + "\n getGenericSuperclass:" + type);
+    public <T> T loadjsonReturnDataStudentList(TypeSupport<T> tTypeSupport) {
         String json = context.getString(R.string.jsonReturnDataStudentList);
-        return callBack.convert(json);
+        return new Gson().fromJson(json, tTypeSupport.getType());
     }
 
+
+    private boolean isSuccessRandom() {
+        //每3秒失败一次
+        return Calendar.getInstance().getTimeInMillis() / 3000 != 0;
+    }
 
 }

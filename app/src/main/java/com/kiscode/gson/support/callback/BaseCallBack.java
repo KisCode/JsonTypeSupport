@@ -1,4 +1,4 @@
-package com.kiscode.gson.support;
+package com.kiscode.gson.support.callback;
 
 import com.google.gson.Gson;
 
@@ -16,9 +16,18 @@ public class BaseCallBack<T> implements ICallBack<T> {
 
     protected BaseCallBack() {
     }
-    
-    BaseCallBack(String string) {
+
+    @Override
+    public void onSuccess(T t) {
+
     }
+
+    @Override
+    public void onFailure(Throwable throwable) {
+
+    }
+
+
 
     @Override
     public T convert(String json) {
@@ -34,7 +43,4 @@ public class BaseCallBack<T> implements ICallBack<T> {
         return null;
     }
 
-    public Type getType() {
-        return null;
-    }
 }

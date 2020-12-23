@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".GenericCallbackSampleActivity"
+    android:padding="@dimen/padding_screen">
+
+    <Button
+        style="@style/style_button"
+        android:onClick="executeICallBack"
+        android:text="ICallBack 接口回调" />
+
+
+    <Button
+        style="@style/style_button"
+        android:onClick="executeBaseCallBack"
+        android:text="ICallBack抽象回调" />
+
+
+    <Button
+        style="@style/style_button"
+        android:onClick="executeTypeSupportBack"
+        android:text="TypeSupport被保护类回调" />
+</LinearLayout>
